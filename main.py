@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 from sqlalchemy import create_engine
 import os
-from flask import Flask
+# from flask import Flask
 
 from dotenv import load_dotenv
 
@@ -83,11 +83,11 @@ def store_p2p_data_to_db(buy_data, sell_data):
         # Store DataFrame in PostgreSQL
         df.to_sql('binance_p2p_data', engine, if_exists='append', index=False)
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return "The service is running and connected to the database."
+# @app.route('/')
+# def index():
+#     return "The service is running and connected to the database."
 
 if __name__ == "__main__":
     asset = 'USDT'
@@ -104,5 +104,5 @@ if __name__ == "__main__":
     print(f"Data stored at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Sleep for a specified interval (e.g., 10 minutes)
-    time.sleep(3600)  # 3600 seconds = 1 hour
-    app.run(host='0.0.0.0', port=5000)
+    # time.sleep(3600)  # 3600 seconds = 1 hour
+    # app.run(host='0.0.0.0', port=5000)
