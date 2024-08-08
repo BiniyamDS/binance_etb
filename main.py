@@ -86,7 +86,7 @@ if __name__ == "__main__":
     asset = 'USDT'
     fiat = 'ETB'
 
-
+    print('Initiating request...')
     # Fetch buy and sell data
     buy_data = fetch_binance_p2p_data(asset=asset, trade_type='BUY', fiat=fiat)
     sell_data = fetch_binance_p2p_data(asset=asset, trade_type='SELL', fiat=fiat)
