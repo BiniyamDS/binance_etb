@@ -40,6 +40,8 @@ def fetch_binance_p2p_data(asset='USDT', trade_type='BUY', fiat='USD', page=1):
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()  # Raise an error for bad responses
         print(f"Response Status Code: {response.status_code}")
+        print('-------------------------')
+        print(response.status_code)
         return response.json()
     except requests.exceptions.HTTPError as errh:
         print(f"HTTP Error: {errh}")
