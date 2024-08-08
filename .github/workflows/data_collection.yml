@@ -28,3 +28,4 @@ jobs:
         DB_URL: ${{ secrets.DB_URL }}  # Use GitHub secrets to securely store your DB URL.
       run: |
         python main.py
+        touch hello
