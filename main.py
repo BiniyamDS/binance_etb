@@ -86,15 +86,15 @@ if __name__ == "__main__":
     asset = 'USDT'
     fiat = 'ETB'
 
-    while True:
-        # Fetch buy and sell data
-        buy_data = fetch_binance_p2p_data(asset=asset, trade_type='BUY', fiat=fiat)
-        sell_data = fetch_binance_p2p_data(asset=asset, trade_type='SELL', fiat=fiat)
 
-        # Store the data in the database
-        store_p2p_data_to_db(buy_data, sell_data)
-        
-        print(f"Data stored at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
-        # Sleep for a specified interval (e.g., 10 minutes)
-        time.sleep(3600)  # 3600 seconds = 1 hour
+    # Fetch buy and sell data
+    buy_data = fetch_binance_p2p_data(asset=asset, trade_type='BUY', fiat=fiat)
+    sell_data = fetch_binance_p2p_data(asset=asset, trade_type='SELL', fiat=fiat)
+
+    # Store the data in the database
+    store_p2p_data_to_db(buy_data, sell_data)
+    
+    print(f"Data stored at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # Sleep for a specified interval (e.g., 10 minutes)
+    time.sleep(3600)  # 3600 seconds = 1 hour
