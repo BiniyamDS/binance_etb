@@ -83,4 +83,4 @@ if __name__ == "__main__":
         print(f"Data stored at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         
         # Sleep for a specified interval (e.g., 10 minutes)
-        time.sleep(600)  # 600 seconds = 10 minutes
+        time.sleep(3600)  # 600 seconds = 10 minutes
