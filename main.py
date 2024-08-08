@@ -1,7 +1,20 @@
 import requests
 import pandas as pd
-import time
 from datetime import datetime
+from sqlalchemy import create_engine
+import os
+
+from dotenv import load_dotenv
+
+# Load environment variables from a .env file
+load_dotenv()
+
+
+# Database URL
+DATABASE_URL = os.getenv('DB_URL')
+
+# Create SQLAlchemy engine
+engine = create_engine(DATABASE_URL)
 
 def fetch_binance_p2p_data(asset='USDT', trade_type='BUY', fiat='USD', page=1):
     url = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
@@ -25,7 +38,7 @@ def fetch_binance_p2p_data(asset='USDT', trade_type='BUY', fiat='USD', page=1):
         print(f"Error: {response.status_code}")
         return None
 
-def store_p2p_data(buy_data, sell_data, filename='binance_p2p_data.csv'):
+def store_p2p_data_to_db(buy_data, sell_data):
     records = []
 
     # Process buy data
@@ -62,25 +75,24 @@ def store_p2p_data(buy_data, sell_data, filename='binance_p2p_data.csv'):
             }
             records.append(record)
 
-    # Convert to DataFrame and save to CSV
+    # Convert to DataFrame
     if records:
         df = pd.DataFrame(records)
-        df.to_csv(filename, mode='a', header=not pd.io.common.file_exists(filename), index=False)
+        # Store DataFrame in PostgreSQL
+        df.to_sql('binance_p2p_data', engine, if_exists='append', index=False)
 
 if __name__ == "__main__":
     asset = 'USDT'
     fiat = 'ETB'
-    filename = 'binance_p2p_data.csv'
-
 
     # Fetch buy and sell data
     buy_data = fetch_binance_p2p_data(asset=asset, trade_type='BUY', fiat=fiat)
     sell_data = fetch_binance_p2p_data(asset=asset, trade_type='SELL', fiat=fiat)
 
-    # Store the data
-    store_p2p_data(buy_data, sell_data, filename=filename)
+    # Store the data in the database
+    store_p2p_data_to_db(buy_data, sell_data)
     
     print(f"Data stored at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Sleep for a specified interval (e.g., 10 minutes)
-    # time.sleep(3600)  # 600 seconds = 10 minutes
+    # time.sleep(3600)  # 3600 seconds = 1 hour
