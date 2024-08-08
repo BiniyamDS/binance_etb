@@ -34,14 +34,15 @@ def fetch_binance_p2p_data(asset='USDT', trade_type='BUY', fiat='USD', page=1):
 
     headers = {
         "Content-Type": "application/json",
+        "User-Agent": "GitHub Actions - Binance P2P Scraper"
     }
 
     try:
+        print(f"Sending request to {url} with payload: {payload} and headers: {headers}")
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()  # Raise an error for bad responses
         print(f"Response Status Code: {response.status_code}")
-        print('-------------------------')
-        print(response.status_code)
+        print(f"Response Headers: {response.headers}")
         return response.json()
     except requests.exceptions.HTTPError as errh:
         print(f"HTTP Error: {errh}")
@@ -112,4 +113,5 @@ if __name__ == "__main__":
     store_p2p_data_to_db(buy_data, sell_data)
     
     print(f"Data stored at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
     # Sleep for a specified interval (e.g., 1 hour)
