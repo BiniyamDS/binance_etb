@@ -14,10 +14,14 @@ load_dotenv()
 
 # Database URL
 DATABASE_URL = os.getenv('DB_URL')
-print(DATABASE_URL)
+print(f'the url is {DATABASE_URL}')
 
 # Create SQLAlchemy engine
-engine = create_engine(DATABASE_URL)
+try:
+    engine = create_engine(DATABASE_URL)
+except:
+    print('error creating engine')
+    exit(1)
 
 def fetch_binance_p2p_data(asset='USDT', trade_type='BUY', fiat='USD', page=1):
     url = "https://p2p.binance.com/bapi/c2c/v2/friendly/c2c/adv/search"
@@ -82,13 +86,10 @@ def store_p2p_data_to_db(buy_data, sell_data):
     if records:
         df = pd.DataFrame(records)
         # Store DataFrame in PostgreSQL
-        df.to_sql('binance_p2p_data', engine, if_exists='append', index=False)
-
-# app = Flask(__name__)
-
-# @app.route('/')
-# def index():
-#     return "The service is running and connected to the database."
+        try:
+            df.to_sql('binance_p2p_data', engine, if_exists='append', index=False)
+        except:
+            print('error adding to db')
 
 if __name__ == "__main__":
     asset = 'USDT'
