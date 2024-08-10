@@ -6,3 +6,4 @@ python-dotenv==1.0.0
 SQLAlchemy==1.4.39
 Flask>=2.0.0
 Werkzeug>=2.0.0
+free-proxy==1.1.1
