@@ -12,7 +12,7 @@ load_dotenv()
 # Database URL
 DATABASE_URL = os.getenv('DB_URL')
 try:
-    PROXY = FreeProxy().get()
+    PROXY = FreeProxy(elite=True).get()
     print(f'Using proxy: {PROXY}')
 except:
     print('Error getting proxy')
@@ -53,7 +53,15 @@ def fetch_binance_p2p_data(asset='USDT', trade_type='BUY', fiat='USD', page=1):
         response.raise_for_status()  # Raise an error for bad responses
         print(f"Response Status Code: {response.status_code}")
         print(f"Response Headers: {response.headers}")
-        return response.json()
+        
+        # Debug: print response text before parsing
+
+        if response.headers['Content-Type'] == 'application/json':
+            return response.json()
+        else:
+            print("Unexpected Content Type:", response.headers['Content-Type'])
+            exit(1)
+
     except requests.exceptions.HTTPError as errh:
         print(f"HTTP Error: {errh}")
         exit(1)
